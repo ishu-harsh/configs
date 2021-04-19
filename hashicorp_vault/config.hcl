@@ -1,7 +1,6 @@
 ui = true
 
 
-
 #for raft system Storage
 
 #storage "raft" {
