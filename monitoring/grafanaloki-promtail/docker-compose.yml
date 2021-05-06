@@ -1,0 +1,27 @@
+version: '3.3'
+
+networks:
+  loki:
+
+services:
+    promtail:
+        container_name: promtail-grfana-loki
+        volumes:
+            - '/root/grafana-loki-configs/promtail-config/:/mnt/config'
+            - '/var/log:/var/log'
+        image: 'grafana/promtail:2.2.0'
+        command: -config.file=/mnt/config/promtail-config.yaml
+        networks:
+            - loki
+
+    loki:
+        volumes:
+            - '/root/grafana-loki-configs/loki-config/:/mnt/config'
+        ports:
+            - '3100:3100'
+        command: -config.file=/mnt/config/loki-config.yaml
+        networks:
+            - loki
+        image: 'grafana/loki:2.2.0'
+        container_name: grafana-loki
+
