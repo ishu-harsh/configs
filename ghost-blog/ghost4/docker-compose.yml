@@ -19,7 +19,7 @@ services:
       database__connection__password: team@work
       database__connection__database: ghost
       # this url value is just an example, and is likely wrong for your environment!
-      url: http://cache.mail250.com/blog4
+      url: http://example.com/blog4
       # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
       #NODE_ENV: development
     volumes:
