@@ -9,6 +9,7 @@ services:
         volumes:
             - './:/mnt/config'
             - '/var/log:/var/log'
+            - '/var/www/html/pos/pos_api_node/logs:/var/log/pos'
         image: 'grafana/promtail:2.2.0'
         command: -config.file=/mnt/config/promtail-config.yml
         networks:
@@ -18,7 +19,7 @@ services:
         volumes:
             - './:/mnt/config'
         ports:
-            - '3100:3100'
+            - '3150:3100'
         command: -config.file=/mnt/config/loki-config.yml
         networks:
             - loki
