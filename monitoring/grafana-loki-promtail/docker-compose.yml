@@ -19,7 +19,7 @@ services:
         volumes:
             - './:/mnt/config'
         ports:
-            - '3150:3100'
+            - '3100:3100'
         command: -config.file=/mnt/config/loki-config.yml
         networks:
             - loki
