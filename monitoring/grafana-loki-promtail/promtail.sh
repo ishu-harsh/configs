@@ -16,10 +16,25 @@ echo ">$>$>$>$>$ Checking the promtail version "
 echo ">$>$>$>$>$"
 promtail --version
 echo ">$>$>$>$>$"
-echo ">$>$>$>$>$ Creating promtail config & systemd file"
+echo ">$>$>$>$>$ Copying promtail config & systemd file"
 echo ">$>$>$>$>$"
 echo ">$>$>$>$>$ /etc/promtail-config.yaml"
 echo ">$>$>$>$>$ /etc/systemd/system/promtail.service"
 echo ">$>$>$>$>$"
-sudo touch /etc/promtail-config.yaml
-sudo touch /etc/systemd/system/promtail.service
+sudo mv /home/ubuntu/promtail_nondocker_config.yml /etc/promtail-config.yaml
+sudo mv /home/ubuntu/promtail.service /etc/systemd/system/promtail.service
+echo ">$>$>$>$>$"
+echo ">$>$>$>$>$ Cleaning up"
+echo ">$>$>$>$>$"
+sudo rm promtail-linux-amd64.zip
+echo ">$>$>$>$>$"
+echo ">$>$>$>$>$ Reloading daemon"
+echo ">$>$>$>$>$"
+sudo systemctl daemon-reload
+echo ">$>$>$>$>$"
+echo ">$>$>$>$>$ Start promtail service after updating the /etc/promtail-config.yaml"
+echo ">$>$>$>$>$ sudo systemctl start promtail.service"
+echo ">$>$>$>$>$ sudo systemctl status promtail.service"
+echo ">$>$>$>$>$ sudo systemctl enable promtail.service"
+echo ">$>$>$>$>$"
+
