@@ -1,0 +1,47 @@
+#
+# Sample Teleport configuration file
+# Creates a single proxy, auth and node server.
+#
+# Things to update:
+#  1. ca_pin: Obtain the CA pin hash for joining more nodes by running 'tctl status'
+#     on the auth server once Teleport is running.
+#  2. license-if-using-teleport-enterprise.pem: If you are an Enterprise customer,
+#     obtain this from https://dashboard.gravitational.com/web/
+#
+teleport:
+  nodename: teleport.9930i.com
+  data_dir: /var/lib/teleport
+  auth_token: 15d7abf2873599153fca3b6f91b81a429a056d447c9db26c
+  auth_servers:
+  - 127.0.0.1:3025
+  log:
+    output: stderr
+    severity: INFO
+  ca_pin: sha256:a226abe2c6cc48d5a8e0f4af3a9a57d91e74e1e8154e9484f23ce404bd0e2295
+# sha256:cfc4fd24d814fe5abefc15acd98205a031380cd5e7dc5c16e0d41e4bdeb05177
+auth_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3025
+  public_addr: teleport.9930i.com:3025
+  tokens:
+  - proxy,node:15d7abf2873599153fca3b6f91b81a429a056d447c9db26c
+  license_file: /path/to/license-if-using-teleport-enterprise.pem
+ssh_service:
+  enabled: "yes"
+  labels:
+    env: staging
+  commands:
+  - name: hostname
+    command: [/usr/bin/hostname]
+    period: 1m0s
+  - name: arch
+    command: [/usr/bin/uname, -p]
+    period: 1h0m0s
+proxy_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3023
+  web_listen_addr: 0.0.0.0:3080
+  tunnel_listen_addr: 0.0.0.0:3024
+#  https_keypairs: []
+  public_addr: teleport.9930i.com
+  ssh_public_addr: teleport.9930i.com
