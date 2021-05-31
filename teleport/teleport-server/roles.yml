@@ -1,0 +1,14 @@
+kind: role
+version: v3
+metadata:
+  name: bob
+spec:
+  allow:
+    logins: ['ubuntu']
+    kubernetes_groups: ['view']
+    node_labels:
+      '*': '*'
+    kubernetes_labels:
+      '*': '*'
+  client_idle_timeout: 15m
+  disconnect_expired_cert: true

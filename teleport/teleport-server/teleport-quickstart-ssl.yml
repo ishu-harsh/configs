@@ -3,10 +3,10 @@ services:
   # The configure container starts, generates a config, writes it to
   # /etc/teleport/teleport.yaml and then immediately exits.
   configure:
-    image: quay.io/gravitational/teleport:5
+    image: quay.io/gravitational/teleport:6.2
     container_name: teleport-configure
     entrypoint: /bin/sh
-    hostname: teleport.9930i.com
+    hostname: teleport-stage.mail250.com
     command: -c "if [ ! -f /etc/teleport/teleport.yaml ]; then teleport configure > /etc/teleport/teleport.yaml; fi"
     volumes:
       - ./teleport/config:/etc/teleport
@@ -32,10 +32,10 @@ services:
   # This container depends on the config written by the configure container above, so it
   # sleeps for a second on startup to allow the configure container to run first.
   teleport:
-    image: quay.io/gravitational/teleport:5
+    image: quay.io/gravitational/teleport:6.2
     container_name: teleport
     entrypoint: /bin/sh
-    hostname: teleport.9930i.com
+    hostname: teleport-stage.mail250.com
     command: -c "sleep 1 && /usr/bin/dumb-init teleport start -c /etc/teleport/teleport.yaml"
     ports:
       - "3023:3023"
@@ -45,12 +45,13 @@ services:
       - ./teleport/config:/etc/teleport
       - ./teleport/data:/var/lib/teleport
     environment:
-      VIRTUAL_HOST: teleport.9930i.com
+      VIRTUAL_HOST: teleport-stage.mail250.com
       VIRTUAL_PORT: 3080
       VIRTUAL_PROTO: https
-      LETSENCRYPT_HOST: teleport.9930i.com
-      LETSENCRYPT_EMAIL: dhruv@9930i.com
+      LETSENCRYPT_HOST: teleport-stage.mail250.com
+      LETSENCRYPT_EMAIL: sales@symbolist.technology
     depends_on:
       - configure
       - letsencrypt-nginx-proxy-companion
     
+
