@@ -1,0 +1,58 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+# - url: IP address of the server on which loki is deployed and you want to push to.
+  - url: http://159.65.155.55:3100/loki/api/v1/push
+
+scrape_configs:
+- job_name: system
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs-sana
+      host: 2-sana
+      __path__: /var/log/**/*log
+
+- job_name: nginx
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: nginx-sana
+      host: 2-sana
+      __path__: /var/log/nginx/*log
+  pipeline_stages:
+  - match:
+      selector: '{job="nginx-sana"}'
+      stages:
+      - regex:
+          expression: "^(?P<remote_addr>[\\w\\.]+) - (?P<remote_user>[^ ]*) \\[(?P<time_local>.*)\\] \"(?P<method>[^ ]*) (?P<request>[^ ]*) (?P<protocol>[^ ]*)\" (?P<status>[\\d]+) (?P<body_bytes_sent>[\\d]+) \"(?P<http_referer>[^\"]*)\" \"(?P<http_user_agent>[^\"]*)\"?"
+      - labels:
+          remote_addr:
+          remote_user:
+          time_local:
+          method:
+          request:
+          protocol:
+          status:
+          body_bytes_sent:
+          http_referer:
+          http_user_agent:
+
+- job_name: pos-sana
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: pos-sana
+      host: 2-sana
+      __path__: /var/www/html/pos/pos_api_node/logs/*log
+
+
+

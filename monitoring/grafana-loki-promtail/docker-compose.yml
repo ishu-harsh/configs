@@ -9,6 +9,7 @@ services:
         volumes:
             - './:/mnt/config'
             - '/var/log:/var/log'
+            - '/var/www/html/pos/pos_api_node/logs:/var/log/pos'
         image: 'grafana/promtail:2.2.0'
         command: -config.file=/mnt/config/promtail-config.yml
         networks:
